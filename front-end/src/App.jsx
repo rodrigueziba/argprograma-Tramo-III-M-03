@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import { Navbar } from "./components/Navbar";
+
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
+import { PostsPage } from "./pages/PostsPage";
+import PostFormPage from "./pages/PostFormPage";
+import ProfilePage from "./pages/ProfilePage";
+import {PostDetailPage} from "./pages/PostDetailPage"; // Nuevo componente para el detalle del post
+import { PostProvider } from "./context/postsContext";
+
+import { ProtectedRoute } from "./ProtectedRoute";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <AuthProvider>
+      <PostProvider>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/posts" element={<PostsPage />} />
+            <Route path="/add-post" element={<PostFormPage />} />
+            <Route path="/posts/:id" element={<PostDetailPage />} /> {/* Utiliza el nuevo componente para el detalle del post */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/profile" element={<ProfilePage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </PostProvider>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;

@@ -38,7 +38,7 @@ export const getPost = async (req, res) => {
   try {
     const post = await Post.findById(postId);
     if (!post) {
-      return res.status(404).json({ error: "Post no existe" });
+      return res.status(404).json({ error: "Post no encontrado" });
     }
     res.status(200).json(post);
   } catch (error) {
@@ -82,23 +82,3 @@ export const deletePost = async (req, res) => {
     res.status(500).json({ error: "Error al eliminar el post" });
   }
 };
-
-/* export const getPosts = async (req, res) => {
-
-};
-
-export const createPost = async (req, res) => {
-
-};
-
-export const getPost = async (req, res) => {
-
-};
-
-export const updatePost = async (req, res) => {
-
-};
-
-export const deletePost = async (req, res) => {
-
-}; */
